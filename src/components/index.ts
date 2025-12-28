@@ -5,3 +5,5 @@ export { default as CareerSection } from './CareerSection';
 export { default as ProjectCard } from './ProjectCard';
 export { default as Particles } from './Particles';
 export { default as DecryptedText } from './DecryptedText';
+export { default as CustomCursor } from './CustomCursor';
+export { default as FilmGrain } from './FilmGrain';

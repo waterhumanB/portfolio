@@ -108,11 +108,13 @@ export default function ProjectsSection() {
                   transform: 'translate(-50%, -50%)',
                   width: '80%',
                   height: '65%',
-                  borderRadius: { xs: 2, md: 2.5 },
+                  borderRadius: { xs: 2.5, md: 3 }, // 조금 더 선명한 곡률
                   overflow: 'hidden',
-                  boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
+                  boxShadow: '0 8px 30px rgba(0, 0, 0, 0.4)',
+                  border: '6px solid rgba(255, 255, 255, 0.8)', // 6px로 더 두껍고 선명하게 강화
                   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                   zIndex: 1,
+                  boxSizing: 'border-box',
                 }}
               >
                 <Box

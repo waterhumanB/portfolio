@@ -4,7 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Inter } from 'next/font/google';
 import { theme } from '../src/theme/theme';
-import Particles from '../src/components/Particles';
+import { Particles, CustomCursor, FilmGrain } from '../src/components';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -26,6 +26,8 @@ export default function RootLayout({
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <Particles />
+            <CustomCursor />
+            <FilmGrain />
             {children}
           </ThemeProvider>
         </AppRouterCacheProvider>

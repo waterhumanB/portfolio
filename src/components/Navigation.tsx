@@ -113,6 +113,7 @@ export default function Navigation() {
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box
             onClick={() => scrollToSection('hero')}
+            className="clickable"
             sx={{
               fontSize: '1.5rem',
               fontWeight: 700,
@@ -134,6 +135,7 @@ export default function Navigation() {
               <Box
                 key={section.id}
                 onClick={() => scrollToSection(section.id)}
+                className="clickable"
                 sx={{
                   position: 'relative',
                   cursor: 'pointer',

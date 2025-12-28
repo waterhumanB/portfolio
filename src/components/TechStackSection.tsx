@@ -5,23 +5,22 @@ import { useEffect, useRef } from 'react';
 import ShinyText from './ShinyText';
 
 const techStack = [
-  { name: 'HTML5', color: '#E34F26' },
-  { name: 'CSS3', color: '#1572B6' },
-  { name: 'SCSS', color: '#CC6699' },
-  { name: 'Material-UI', color: '#007FFF' },
-  { name: 'Styled Components', color: '#DB7093' },
-  { name: 'GSAP', color: '#88CE02' },
-  { name: 'JavaScript', color: '#F7DF1E' },
-  { name: 'TypeScript', color: '#3178C6' },
-  { name: 'React', color: '#61DAFB' },
-  { name: 'Next.js', color: '#FFFFFF' },
-  { name: 'Chart.js', color: '#FF6384' },
-  { name: 'Three.js', color: '#FFFFFF' },
-  { name: 'Git', color: '#F05032' },
-  { name: 'SEO', color: '#4285F4' },
-  { name: 'GA4', color: '#E37400' },
-  { name: 'Puppeteer', color: '#40B5A4' },
-  { name: 'Electron', color: '#47848F' },
+  { name: 'HTML5', color: '#E34F26', icon: 'html5' },
+  { name: 'CSS3', color: '#1572B6', icon: 'css' },
+  { name: 'SCSS', color: '#CC6699', icon: 'sass' },
+  { name: 'Material-UI', color: '#007FFF', icon: 'mui' },
+  { name: 'Styled Components', color: '#DB7093', icon: 'styledcomponents' },
+  { name: 'GSAP', color: '#88CE02', icon: 'greensock' },
+  { name: 'JavaScript', color: '#F7DF1E', icon: 'javascript' },
+  { name: 'TypeScript', color: '#3178C6', icon: 'typescript' },
+  { name: 'React', color: '#61DAFB', icon: 'react' },
+  { name: 'Next.js', color: '#FFFFFF', icon: 'nextdotjs' },
+  { name: 'Three.js', color: '#FFFFFF', icon: 'threedotjs' },
+  { name: 'Electron', color: '#47848F', icon: 'electron' },
+  { name: 'Git', color: '#F05032', icon: 'git' },
+  { name: 'SEO', color: '#4285F4', icon: 'google' },
+  { name: 'GA4', color: '#E37400', icon: 'googleanalytics' },
+  { name: 'Puppeteer', color: '#40B5A4', icon: 'puppeteer' },
 ];
 
 export default function TechStackSection() {
@@ -117,12 +116,14 @@ export default function TechStackSection() {
             }}
           >
             <Box
+              component="img"
+              src={`https://cdn.simpleicons.org/${tech.icon}/${tech.color.replace('#', '')}`}
+              alt={tech.name}
               sx={{
-                width: 12,
-                height: 12,
-                borderRadius: '50%',
-                bgcolor: tech.color,
-                boxShadow: `0 0 10px ${tech.color}`,
+                width: 24,
+                height: 24,
+                filter: `drop-shadow(0 0 8px ${tech.color}60)`,
+                objectFit: 'contain',
               }}
             />
             <Typography

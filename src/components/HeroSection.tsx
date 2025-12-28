@@ -4,8 +4,8 @@ import { Box, Typography } from '@mui/material';
 import TextType from './TextType';
 import WavingHand from './WavingHand';
 
-// 애니메이션으로 바뀌는 문구들 (나중에 수정 가능)
-const ANIMATED_ROLES = ['Code', 'Vibe'];
+// 애니메이션으로 바뀌는 문구들
+const ANIMATED_ROLES = ['Solutions', 'Experiences', 'Vibes'];
 
 export default function HeroSection() {
   return (
@@ -97,7 +97,7 @@ export default function HeroSection() {
               lineHeight: 1.2,
             }}
           >
-            that inspire & engage.
+            that inspires & engages.
           </Typography>
         </Box>
 
@@ -118,7 +118,6 @@ export default function HeroSection() {
             }}
           >
             데이터를 이해하는 개발자, 코드를 이해하는 마케터. 두 영역의 경계를 허무는 크리에이터 배수인입니다.
-<br /><br />
 단순한 웹사이트가 아닌, 비즈니스 목표를 달성하는 디지털 솔루션을 설계합니다.
           </Typography>
         </Box>
