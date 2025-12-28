@@ -116,7 +116,8 @@ function ProjectItem({ project, index }: { project: any; index: number }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        px: { xs: 2, md: 10 },
+        px: { xs: 1.5, sm: 2, md: 10 },
+        py: { xs: 2, md: 0 },
         borderRight: '1px solid rgba(255,255,255,0.05)',
       }}
     >

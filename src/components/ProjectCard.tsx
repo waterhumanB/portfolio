@@ -15,9 +15,9 @@ export default function ProjectCard({ project, isVisible }: ProjectCardProps) {
       sx={{
         display: 'flex',
         flexDirection: { xs: 'column', md: 'row' },
-        gap: { xs: 4, md: 6 },
-        p: { xs: 3, sm: 4, md: 5 },
-        borderRadius: 4,
+        gap: { xs: 2, sm: 3, md: 6 },
+        p: { xs: 2, sm: 3, md: 5 },
+        borderRadius: { xs: 3, md: 4 },
         background: 'rgba(255, 255, 255, 0.05)',
         backdropFilter: 'blur(20px)',
         border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -42,9 +42,9 @@ export default function ProjectCard({ project, isVisible }: ProjectCardProps) {
           sx={{
             position: 'relative',
             width: '100%',
-            height: { xs: '300px', sm: '400px', md: '100%' },
+            height: { xs: '200px', sm: '300px', md: '100%' },
             minHeight: { md: '400px' },
-            borderRadius: 3,
+            borderRadius: { xs: 2, md: 3 },
             overflow: 'hidden',
             transition: 'transform 0.3s ease',
             '&:hover': {
@@ -76,9 +76,9 @@ export default function ProjectCard({ project, isVisible }: ProjectCardProps) {
         <Typography
           variant="h3"
           sx={{
-            mb: 2,
+            mb: { xs: 1, md: 2 },
             fontWeight: 700,
-            fontSize: { xs: '1.75rem', sm: '2rem', md: '2.5rem' },
+            fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2.5rem' },
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
             transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s',
@@ -90,9 +90,9 @@ export default function ProjectCard({ project, isVisible }: ProjectCardProps) {
         <Typography
           variant="subtitle1"
           sx={{
-            mb: 3,
+            mb: { xs: 1.5, md: 3 },
             color: 'rgba(255, 255, 255, 0.7)',
-            fontSize: { xs: '1rem', md: '1.1rem' },
+            fontSize: { xs: '0.85rem', sm: '0.95rem', md: '1.1rem' },
             fontWeight: 500,
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
@@ -105,10 +105,10 @@ export default function ProjectCard({ project, isVisible }: ProjectCardProps) {
         <Typography
           variant="body1"
           sx={{
-            mb: 4,
-            lineHeight: 1.8,
+            mb: { xs: 2, md: 4 },
+            lineHeight: { xs: 1.6, md: 1.8 },
             color: 'rgba(255, 255, 255, 0.85)',
-            fontSize: { xs: '0.95rem', md: '1rem' },
+            fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
             transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.5s',
@@ -121,8 +121,8 @@ export default function ProjectCard({ project, isVisible }: ProjectCardProps) {
           sx={{
             display: 'flex',
             flexWrap: 'wrap',
-            gap: 1.5,
-            mb: 4,
+            gap: { xs: 1, md: 1.5 },
+            mb: { xs: 2, md: 4 },
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
             transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s',
@@ -138,7 +138,8 @@ export default function ProjectCard({ project, isVisible }: ProjectCardProps) {
                 border: '1px solid rgba(255, 255, 255, 0.2)',
                 color: 'white',
                 fontWeight: 500,
-                fontSize: { xs: '0.8rem', md: '0.85rem' },
+                fontSize: { xs: '0.7rem', sm: '0.75rem', md: '0.85rem' },
+                height: { xs: '24px', md: '32px' },
                 '&:hover': {
                   backgroundColor: 'rgba(255, 255, 255, 0.15)',
                 },
@@ -153,16 +154,16 @@ export default function ProjectCard({ project, isVisible }: ProjectCardProps) {
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            endIcon={<ArrowForwardIcon sx={{ transition: 'transform 0.3s ease' }} />}
+            endIcon={<ArrowForwardIcon sx={{ transition: 'transform 0.3s ease', fontSize: { xs: '1rem', md: '1.25rem' } }} />}
             sx={{
               borderRadius: 9999,
-              px: 4,
-              py: 1.5,
-              borderWidth: 2,
+              px: { xs: 3, md: 4 },
+              py: { xs: 1, md: 1.5 },
+              borderWidth: { xs: 1.5, md: 2 },
               borderColor: 'rgba(255, 255, 255, 0.3)',
               color: 'white',
               fontWeight: 600,
-              fontSize: { xs: '0.9rem', md: '1rem' },
+              fontSize: { xs: '0.8rem', sm: '0.85rem', md: '1rem' },
               alignSelf: 'flex-start',
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
