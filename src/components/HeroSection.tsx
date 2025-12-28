@@ -53,7 +53,7 @@ export default function HeroSection() {
           </Typography>
 
           <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', gap: 2 }}>
-            <a href="https://github.com/dpfflsk45" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', display: 'flex' }}>
+            <a href="https://github.com/waterhumanB" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', display: 'flex' }}>
               <GitHubIcon sx={{ color: 'text.secondary', cursor: 'pointer' }} />
             </a>
           </Box>
