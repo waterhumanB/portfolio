@@ -114,15 +114,16 @@ export default function Particles() {
             display: 'block',
             width: '100%',
             height: '100%',
+            opacity: ready ? 1 : 0,
+            transition: 'opacity 1.5s ease-in-out',
           }}
           dpr={[1, 2]}
           gl={{ 
             antialias: false, 
-            alpha: true, // 알파 채널 허용
+            alpha: true,
             powerPreference: 'high-performance' 
           }}
           onCreated={({ gl }) => {
-            // 생성 직후 캔버스 크기를 컨테이너에 맞춰 수동으로 강제 설정
             if (containerRef.current) {
               const width = containerRef.current.offsetWidth;
               const height = containerRef.current.offsetHeight;

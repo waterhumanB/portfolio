@@ -32,7 +32,7 @@ export default function HeroSection() {
         <Box
           sx={{
             opacity: 0,
-            animation: 'fadeIn 0.8s ease-out forwards',
+            animation: 'fadeIn 0.8s ease-out 0.8s forwards', // 배경이 뜨는 도중 시작
             '@keyframes fadeIn': {
               from: { opacity: 0, transform: 'translateY(-20px)' },
               to: { opacity: 1, transform: 'translateY(0)' },
@@ -59,7 +59,7 @@ export default function HeroSection() {
           sx={{
             mb: 4,
             opacity: 0,
-            animation: 'fadeIn 0.8s ease-out 0.3s forwards',
+            animation: 'fadeIn 0.8s ease-out 1.2s forwards', // 지연 시간 상향
           }}
         >
           <Typography
@@ -107,7 +107,7 @@ export default function HeroSection() {
             maxWidth: '840px',
             mb: 5,
             opacity: 0,
-            animation: 'fadeIn 0.8s ease-out 0.6s forwards',
+            animation: 'fadeIn 0.8s ease-out 1.6s forwards', // 지연 시간 상향
           }}
         >
           <Typography
@@ -118,7 +118,7 @@ export default function HeroSection() {
             }}
           >
             데이터를 이해하는 개발자, 코드를 이해하는 마케터. 두 영역의 경계를 허무는 크리에이터 배수인입니다.
-
+<br /><br />
 단순한 웹사이트가 아닌, 비즈니스 목표를 달성하는 디지털 솔루션을 설계합니다.
           </Typography>
         </Box>
@@ -127,7 +127,7 @@ export default function HeroSection() {
         <Box
           sx={{
             opacity: 0,
-            animation: 'fadeIn 0.8s ease-out 0.9s forwards',
+            animation: 'fadeIn 0.8s ease-out 2s forwards', // 지연 시간 상향
           }}
         >
           <Box
