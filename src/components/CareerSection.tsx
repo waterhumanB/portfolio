@@ -78,100 +78,102 @@ export default function CareerSection() {
         </Typography>
       </Box>
 
-      <Timeline position="alternate">
-        {careerHistory.map((career, index) => {
-          const isVisible = visibleItems.includes(index);
+      <Box sx={{ maxWidth: '1400px', width: '100%', mx: 'auto' }}>
+        <Timeline position="alternate">
+          {careerHistory.map((career, index) => {
+            const isVisible = visibleItems.includes(index);
 
-          return (
-            <TimelineItem key={career.id}>
-              <TimelineSeparator>
-                {/* 동그라미 */}
-                <TimelineDot
-                  sx={{
-                    width: 16,
-                    height: 16,
-                    bgcolor: 'white',
-                    boxShadow: '0 0 20px rgba(255, 255, 255, 0.5)',
-                    border: '3px solid rgba(255, 255, 255, 0.3)',
-                    transform: isVisible ? 'scale(1)' : 'scale(0)',
-                    opacity: isVisible ? 1 : 0,
-                    transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                    transitionDelay: `${(careerHistory.length - 1 - index) * 0.3}s`,
-                  }}
-                />
-
-                {/* 연결선 */}
-                {index < careerHistory.length - 1 && (
-                  <TimelineConnector
+            return (
+              <TimelineItem key={career.id}>
+                <TimelineSeparator>
+                  {/* 동그라미 */}
+                  <TimelineDot
                     sx={{
-                      bgcolor: 'rgba(255, 255, 255, 0.3)',
-                      width: 2,
-                      position: 'relative',
-                      overflow: 'hidden',
-                      '&::before': {
-                        content: '""',
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        width: '100%',
-                        height: isVisible ? '100%' : '0%',
-                        bgcolor: 'white',
-                        transition: 'height 0.6s ease',
-                        transitionDelay: `${(careerHistory.length - 1 - index) * 0.3 + 0.3}s`,
-                        boxShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
-                      },
+                      width: 16,
+                      height: 16,
+                      bgcolor: 'white',
+                      boxShadow: '0 0 20px rgba(255, 255, 255, 0.5)',
+                      border: '3px solid rgba(255, 255, 255, 0.3)',
+                      transform: isVisible ? 'scale(1)' : 'scale(0)',
+                      opacity: isVisible ? 1 : 0,
+                      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                      transitionDelay: `${(careerHistory.length - 1 - index) * 0.3}s`,
                     }}
                   />
-                )}
-              </TimelineSeparator>
 
-              <TimelineContent>
-                <Box
-                  sx={{
-                    transform: isVisible
-                      ? 'translateY(0)'
-                      : 'translateY(50px)',
-                    opacity: isVisible ? 1 : 0,
-                    transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-                    transitionDelay: `${(careerHistory.length - 1 - index) * 0.3}s`,
-                  }}
-                >
-                  <Typography
-                    variant="h6"
+                  {/* 연결선 */}
+                  {index < careerHistory.length - 1 && (
+                    <TimelineConnector
+                      sx={{
+                        bgcolor: 'rgba(255, 255, 255, 0.3)',
+                        width: 2,
+                        position: 'relative',
+                        overflow: 'hidden',
+                        '&::before': {
+                          content: '""',
+                          position: 'absolute',
+                          bottom: 0,
+                          left: 0,
+                          width: '100%',
+                          height: isVisible ? '100%' : '0%',
+                          bgcolor: 'white',
+                          transition: 'height 0.6s ease',
+                          transitionDelay: `${(careerHistory.length - 1 - index) * 0.3 + 0.3}s`,
+                          boxShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
+                        },
+                      }}
+                    />
+                  )}
+                </TimelineSeparator>
+
+                <TimelineContent>
+                  <Box
                     sx={{
-                      mb: 0.5,
-                      fontWeight: 700,
-                      fontSize: { xs: '1.1rem', md: '1.25rem' },
+                      transform: isVisible
+                        ? 'translateY(0)'
+                        : 'translateY(50px)',
+                      opacity: isVisible ? 1 : 0,
+                      transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                      transitionDelay: `${(careerHistory.length - 1 - index) * 0.3}s`,
                     }}
                   >
-                    {career.company}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: 'rgba(255, 255, 255, 0.7)',
-                      mb: 1,
-                      fontSize: { xs: '0.85rem', md: '0.9rem' },
-                    }}
-                  >
-                    {career.period}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      color: 'rgba(255, 255, 255, 0.85)',
-                      lineHeight: 1.7,
-                      fontSize: { xs: '0.9rem', md: '1rem' },
-                    }}
-                  >
-                    {career.description}
-                  </Typography>
-                </Box>
-              </TimelineContent>
-            </TimelineItem>
-          );
-        })}
-      </Timeline>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        mb: 0.5,
+                        fontWeight: 700,
+                        fontSize: { xs: '1.1rem', md: '1.25rem' },
+                      }}
+                    >
+                      {career.company}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        mb: 1,
+                        fontSize: { xs: '0.85rem', md: '0.9rem' },
+                      }}
+                    >
+                      {career.period}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        color: 'rgba(255, 255, 255, 0.85)',
+                        lineHeight: 1.7,
+                        fontSize: { xs: '0.9rem', md: '1rem' },
+                      }}
+                    >
+                      {career.description}
+                    </Typography>
+                  </Box>
+                </TimelineContent>
+              </TimelineItem>
+            );
+          })}
+        </Timeline>
+      </Box>
     </Box>
   );
 }
