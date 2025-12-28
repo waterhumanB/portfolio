@@ -56,28 +56,29 @@ export default function ProjectsSection() {
           margin: '0 auto',
         }}
       >
-        {projects.map((project, index) => (
-          <Box
-            key={project.id}
+        {projects.map((project, index) => {
+          return (
+            <Box
+              key={project.id}
             sx={{
               display: 'flex',
               flexDirection: 'column',
               gap: 2,
-              // 오른쪽 열(홀수 인덱스)을 아래로 이동
               mt: { xs: 0, md: index % 2 === 1 ? 8 : 0 },
-              p: 0.5, // 약간의 패딩 추가
+              p: 0.5,
             }}
           >
-            {/* 이미지 카드 */}
+            {/* 이미지 카드 컨테이너 */}
             <Box
               sx={{
                 position: 'relative',
                 aspectRatio: '4/3',
                 borderRadius: { xs: 2.2, md: 3.2 },
-                background: projectBackgrounds[index % projectBackgrounds.length],
-                transition: 'box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
                 overflow: 'hidden',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                transition: 'box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                transform: 'translateZ(0)', // GPU 가속
+                background: 'rgba(255, 255, 255, 0.05)', // 기본 배경 (투명할 때 비침 방지)
                 '&:hover': {
                   boxShadow: '0 16px 50px rgba(0, 0, 0, 0.6)',
                   '& .project-overlay': {
@@ -86,6 +87,17 @@ export default function ProjectsSection() {
                 },
               }}
             >
+              {/* [근본 해결] 배경색 레이어를 1px 안쪽으로 배치하여 모서리 비침 방지 */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  inset: 1, // 1px 작게 설정하여 오버레이가 완벽하게 덮도록 함
+                  background: projectBackgrounds[index % projectBackgrounds.length],
+                  borderRadius: 'inherit',
+                  zIndex: 0,
+                }}
+              />
+
               {/* 가운데 이미지 */}
               <Box
                 className="project-image-container"
@@ -100,6 +112,7 @@ export default function ProjectsSection() {
                   overflow: 'hidden',
                   boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
                   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                  zIndex: 1,
                 }}
               >
                 <Box
@@ -119,16 +132,18 @@ export default function ProjectsSection() {
                 className="project-overlay"
                 sx={{
                   position: 'absolute',
-                  inset: 0,
-                  background: 'rgba(0, 0, 0, 0.6)',
+                  inset: 0, // 컨테이너를 꽉 채움 (배경보다 1px 큼)
+                  background: 'rgba(0, 0, 0, 0.72)',
                   backdropFilter: 'blur(10px)',
-                  borderRadius: { xs: 1, md: 1 },
+                  WebkitBackdropFilter: 'blur(10px)',
+                  borderRadius: 'inherit',
                   opacity: 0,
                   transition: 'opacity 0.4s ease',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
                   p: { xs: 3, md: 4 },
+                  zIndex: 2,
                 }}
               >
                 <Typography
@@ -168,10 +183,9 @@ export default function ProjectsSection() {
                         px: 1.5,
                         py: 0.5,
                         borderRadius: 1,
-                        bgcolor: 'rgba(255, 255, 255, 0.1)',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        bgcolor: 'rgba(255, 255, 255, 0.12)', // 테두리 대신 배경색을 소폭 강조
                         fontSize: { xs: '0.7rem', md: '0.75rem' },
-                        color: 'white',
+                        color: 'rgba(255, 255, 255, 0.9)', // 부드러운 흰색
                         fontWeight: 500,
                       }}
                     >
@@ -253,7 +267,8 @@ export default function ProjectsSection() {
               </Typography>
             </Box>
           </Box>
-        ))}
+        );
+      })}
       </Box>
     </Box>
   );
