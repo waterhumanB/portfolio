@@ -10,113 +10,131 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        py: 6,
-        px: 3,
+        pt: { xs: 4, md: 6 },
+        pb: { xs: 2, md: 3 }, // 하단 여백 축소
+        px: { xs: 2, md: 3 },
         bgcolor: 'transparent',
-        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
       }}
     >
       <Box
         sx={{
-          maxWidth: '1200px',
+          maxWidth: '1400px',
           margin: '0 auto',
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-          justifyContent: 'space-between',
-          alignItems: { xs: 'center', md: 'flex-start' },
-          gap: 4,
+          pt: { xs: 6, md: 8 },
+          pb: { xs: 4, md: 5 }, // 카드 내부 하단 여백 축소
+          px: { xs: 4, md: 8 },
+          bgcolor: '#0A0A0A',
+          borderRadius: { xs: '24px', md: '40px' },
+          border: '1px solid rgba(255, 255, 255, 0.05)',
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)',
         }}
       >
-        {/* 왼쪽: 이름 & 설명 */}
-        <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-          <Typography
-            variant="h5"
-            sx={{
-              fontWeight: 700,
-              mb: 1,
-              background: 'linear-gradient(90deg, #fff, #999)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            배수인
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              color: 'rgba(255, 255, 255, 0.7)',
-              maxWidth: '300px',
-            }}
-          >
-            Marketer & Frontend Developer
-          </Typography>
-        </Box>
-
-        {/* 가운데: 연락처 정보 */}
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'column',
-            gap: 1.5,
-            textAlign: { xs: 'center', md: 'left' },
+            flexDirection: { xs: 'column', md: 'row' },
+            justifyContent: 'space-between',
+            alignItems: { xs: 'center', md: 'flex-start' },
+            gap: 4,
+            mb: 6
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: { xs: 'center', md: 'flex-start' } }}>
-            <EmailIcon sx={{ fontSize: '1.2rem', color: 'rgba(255, 255, 255, 0.7)' }} />
-            <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-              dpfflsk45@gmail.com
+          {/* 왼쪽: 이름 & 설명 */}
+          <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: 800,
+                mb: 1.5,
+                background: 'linear-gradient(90deg, #fff, #999)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                letterSpacing: '-0.02em'
+              }}
+            >
+              배수인
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'rgba(255, 255, 255, 0.6)',
+                maxWidth: '300px',
+                lineHeight: 1.6
+              }}
+            >
+              Marketer & Frontend Developer<br />
+              Creating meaningful digital experiences.
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: { xs: 'center', md: 'flex-start' } }}>
-            <PhoneIcon sx={{ fontSize: '1.2rem', color: 'rgba(255, 255, 255, 0.7)' }} />
-            <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-              010-4430-7175
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: { xs: 'center', md: 'flex-start' } }}>
-            <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-              📍 Seoul, Sillim-dong
-            </Typography>
-          </Box>
-        </Box>
 
-        {/* 오른쪽: 소셜 링크 */}
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <IconButton
-            href="https://github.com/waterhumanB"
-            target="_blank"
-            rel="noopener noreferrer"
+          {/* 가운데: 연락처 정보 */}
+          <Box
             sx={{
-              color: 'rgba(255, 255, 255, 0.7)',
-              '&:hover': {
-                color: 'white',
-                bgcolor: 'rgba(255, 255, 255, 0.1)',
-              },
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
             }}
           >
-            <GitHubIcon />
-          </IconButton>
-        </Box>
-      </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, justifyContent: { xs: 'center', md: 'flex-start' } }}>
+              <EmailIcon sx={{ fontSize: '1.1rem', color: '#88CE02' }} />
+              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: 500 }}>
+                dpfflsk45@gmail.com
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, justifyContent: { xs: 'center', md: 'flex-start' } }}>
+              <PhoneIcon sx={{ fontSize: '1.1rem', color: '#88CE02' }} />
+              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', fontWeight: 500 }}>
+                010-4430-7175
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, justifyContent: { xs: 'center', md: 'flex-start' } }}>
+              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.5)' }}>
+                📍 Seoul, Sillim-dong
+              </Typography>
+            </Box>
+          </Box>
 
-      {/* 하단: 저작권 */}
-      <Box
-        sx={{
-          mt: 4,
-          pt: 3,
-          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-          textAlign: 'center',
-        }}
-      >
-        <Typography
-          variant="body2"
+          {/* 오른쪽: 소셜 링크 */}
+          <Box sx={{ display: 'flex', gap: 1.5 }}>
+            <IconButton
+              href="https://github.com/waterhumanB"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{
+                color: 'white',
+                bgcolor: 'rgba(255, 255, 255, 0.05)',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  bgcolor: '#88CE02',
+                  color: 'black',
+                  transform: 'translateY(-5px)'
+                },
+              }}
+            >
+              <GitHubIcon />
+            </IconButton>
+          </Box>
+        </Box>
+
+        {/* 하단: 저작권 */}
+        <Box
           sx={{
-            color: 'rgba(255, 255, 255, 0.5)',
-            fontSize: '0.85rem',
+            pt: 4,
+            borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+            textAlign: { xs: 'center', md: 'center' },
           }}
         >
-          © {new Date().getFullYear()} 배수인. All rights reserved.
-        </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'rgba(255, 255, 255, 0.4)',
+              fontSize: '0.8rem',
+              letterSpacing: '0.05em'
+            }}
+          >
+            © 2025 배수인. All rights reserved.
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

@@ -41,7 +41,7 @@ export default function CustomCursor() {
       const isPointer = !!target.closest('a, button, [role="button"], .clickable, .MuiButtonBase-root, input, select, [tabindex]:not([tabindex="-1"])');
 
       if (isPointer) {
-        gsap.to(cursor, { scale: 3.5, duration: 0.3, ease: "power2.out" }); // 호버 시 크기를 3.5배로 명확하게 키움
+        gsap.to(cursor, { scale: 2, duration: 0.3, ease: "power2.out" }); // 호버 시 크기를 3.5배로 명확하게 키움
       } else {
         gsap.to(cursor, { scale: 1, duration: 0.3, ease: "power2.out" });
       }

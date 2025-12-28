@@ -12,6 +12,212 @@ const projectBackgrounds = [
   'linear-gradient(135deg, #FFE5E5 0%, #FFD1D1 100%)', // 연한 핑크
 ];
 
+function ProjectCard({ project, index }: { project: any, index: number }) {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        mt: { xs: 0, md: index % 2 === 1 ? 8 : 0 },
+        p: 0.5,
+      }}
+    >
+      {/* 이미지 카드 컨테이너 */}
+      <Box
+        sx={{
+          position: 'relative',
+          aspectRatio: '4/3',
+          borderRadius: { xs: 2.2, md: 3.2 },
+          overflow: 'hidden',
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6)',
+          background: '#000', // 베이스 배경
+          cursor: 'pointer',
+          '&:hover .project-overlay': {
+            opacity: 1,
+          },
+          // [결정적 해결책] 하드웨어 가속 클리핑 강제 (모서리 빈틈 방지 CSS 핵)
+          transform: 'translateZ(0)',
+          WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+        }}
+      >
+        {/* 그래디언트 배경 레이어 - 인셋을 음수값으로 주어 모서리 끝까지 강제로 늘림 */}
+        <Box
+          sx={{
+            position: 'absolute',
+            inset: -2, 
+            background: projectBackgrounds[index % projectBackgrounds.length],
+            borderRadius: 'inherit',
+            zIndex: 0,
+          }}
+        />
+
+        {/* 가운데 이미지 */}
+        <Box
+          className="project-image-container"
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '80%',
+            height: '65%',
+            borderRadius: { xs: 2.5, md: 3 },
+            overflow: 'hidden',
+            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.5)',
+            zIndex: 1,
+          }}
+        >
+          <Box
+            sx={{
+              width: '100%',
+              height: '100%',
+              backgroundImage: `url(${project.image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
+        </Box>
+
+        {/* 호버 시 상세 정보 오버레이 - 초대형 사각형으로 만들어 모든 틈새 강제 차단 */}
+        <Box
+          className="project-overlay"
+          sx={{
+            position: 'absolute',
+            inset: -50, // 훨씬 크게 확장
+            background: 'rgba(0, 0, 0, 0.85)', 
+            backdropFilter: 'blur(15px)',
+            WebkitBackdropFilter: 'blur(15px)',
+            borderRadius: 0, // 곡률을 없애서 사각형 끝까지 꽉 채움
+            opacity: 0,
+            transition: 'opacity 0.3s ease',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            p: { xs: 3 + 50/8, md: 6 + 50/8 }, // 패딩 보정
+            zIndex: 2,
+          }}
+        >
+          <Box>
+            <Typography
+              sx={{
+                fontSize: { xs: '0.75rem', md: '0.85rem' },
+                color: '#88CE02',
+                mb: 1,
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em'
+              }}
+            >
+              {project.subtitle}
+            </Typography>
+
+            <Typography
+              variant="h5"
+              sx={{
+                fontSize: { xs: '1.2rem', md: '1.5rem' },
+                color: 'white',
+                fontWeight: 800,
+                mb: 2,
+                lineHeight: 1.2
+              }}
+            >
+              {project.title}
+            </Typography>
+
+            <Typography
+              sx={{
+                fontSize: { xs: '0.85rem', md: '0.95rem' },
+                color: 'rgba(255, 255, 255, 0.7)',
+                lineHeight: 1.6,
+                mb: 3,
+              }}
+            >
+              {project.description}
+            </Typography>
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 1,
+                mb: project.link ? 4 : 0,
+              }}
+            >
+              {project.tech.map((tech: string) => (
+                <Box
+                  key={tech}
+                  sx={{
+                    px: 1.5,
+                    py: 0.5,
+                    borderRadius: 1,
+                    bgcolor: 'rgba(255, 255, 255, 0.1)',
+                    fontSize: '0.75rem',
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                  }}
+                >
+                  {tech}
+                </Box>
+              ))}
+            </Box>
+
+            {project.link && (
+              <Box
+                component="a"
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="clickable"
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  px: 3,
+                  py: 1.2,
+                  borderRadius: '100px',
+                  bgcolor: '#88CE02',
+                  color: 'black',
+                  width: 'fit-content',
+                  transition: 'all 0.3s ease',
+                  textDecoration: 'none',
+                  fontWeight: 700,
+                  fontSize: '0.9rem',
+                }}
+              >
+                View Project →
+              </Box>
+            )}
+          </Box>
+        </Box>
+      </Box>
+
+      {/* 하단 텍스트 정보 */}
+      <Box sx={{ px: 1 }}>
+        <Typography
+          sx={{
+            fontSize: { xs: '1.1rem', md: '1.3rem' },
+            fontWeight: 800,
+            color: 'white',
+            mb: 0.5,
+          }}
+        >
+          {project.title}
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: { xs: '0.8rem', md: '0.9rem' },
+            color: 'rgba(255, 255, 255, 0.5)',
+            fontWeight: 500,
+          }}
+        >
+          {project.subtitle}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
+
 export default function ProjectsSection() {
   return (
     <Box
@@ -35,13 +241,14 @@ export default function ProjectsSection() {
         />
         <Typography
           sx={{
-            mt: 0.5,
+            mt: 1,
             fontSize: { xs: '0.9rem', md: '1rem' },
-            color: 'rgba(255, 255, 255, 0.6)',
+            color: 'rgba(255, 255, 255, 0.5)',
             maxWidth: '600px',
+            lineHeight: 1.6
           }}
         >
-          비즈니스 문제를 해결하고 성장을 만든 기록.
+          성장의 기록. 비즈니스 가치를 창출하고 문제를 해결한 주요 프로젝트들입니다.
         </Typography>
       </Box>
 
@@ -50,227 +257,15 @@ export default function ProjectsSection() {
         sx={{
           display: 'grid',
           gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
-          gap: { xs: 3, md: 4 },
+          gap: { xs: 4, md: 6 },
           maxWidth: '1400px',
           width: '100%',
           margin: '0 auto',
         }}
       >
-        {projects.map((project, index) => {
-          return (
-            <Box
-              key={project.id}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 2,
-              mt: { xs: 0, md: index % 2 === 1 ? 8 : 0 },
-              p: 0.5,
-            }}
-          >
-            {/* 이미지 카드 컨테이너 */}
-            <Box
-              sx={{
-                position: 'relative',
-                aspectRatio: '4/3',
-                borderRadius: { xs: 2.2, md: 3.2 },
-                overflow: 'hidden',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
-                transition: 'box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                transform: 'translateZ(0)', // GPU 가속
-                background: 'rgba(255, 255, 255, 0.05)', // 기본 배경 (투명할 때 비침 방지)
-                '&:hover': {
-                  boxShadow: '0 16px 50px rgba(0, 0, 0, 0.6)',
-                  '& .project-overlay': {
-                    opacity: 1,
-                  },
-                },
-              }}
-            >
-              {/* [근본 해결] 배경색 레이어를 1px 안쪽으로 배치하여 모서리 비침 방지 */}
-              <Box
-                sx={{
-                  position: 'absolute',
-                  inset: 1, // 1px 작게 설정하여 오버레이가 완벽하게 덮도록 함
-                  background: projectBackgrounds[index % projectBackgrounds.length],
-                  borderRadius: 'inherit',
-                  zIndex: 0,
-                }}
-              />
-
-              {/* 가운데 이미지 */}
-              <Box
-                className="project-image-container"
-                sx={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: '80%',
-                  height: '65%',
-                  borderRadius: { xs: 2.5, md: 3 }, // 조금 더 선명한 곡률
-                  overflow: 'hidden',
-                  boxShadow: '0 8px 30px rgba(0, 0, 0, 0.4)',
-                  border: '6px solid rgba(255, 255, 255, 0.8)', // 6px로 더 두껍고 선명하게 강화
-                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                  zIndex: 1,
-                  boxSizing: 'border-box',
-                }}
-              >
-                <Box
-                  className="project-image"
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundImage: `url(${project.image})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  }}
-                />
-              </Box>
-
-              {/* 호버 시 상세 정보 오버레이 */}
-              <Box
-                className="project-overlay"
-                sx={{
-                  position: 'absolute',
-                  inset: 0, // 컨테이너를 꽉 채움 (배경보다 1px 큼)
-                  background: 'rgba(0, 0, 0, 0.72)',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
-                  borderRadius: 'inherit',
-                  opacity: 0,
-                  transition: 'opacity 0.4s ease',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  p: { xs: 3, md: 4 },
-                  zIndex: 2,
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: { xs: '0.75rem', md: '0.85rem' },
-                    color: 'rgba(255, 255, 255, 0.6)',
-                    mb: 1,
-                    fontWeight: 500,
-                  }}
-                >
-                  {project.subtitle}
-                </Typography>
-
-                <Typography
-                  sx={{
-                    fontSize: { xs: '0.85rem', md: '0.95rem' },
-                    color: 'rgba(255, 255, 255, 0.9)',
-                    lineHeight: 1.6,
-                    mb: 2,
-                  }}
-                >
-                  {project.description}
-                </Typography>
-
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: 1,
-                    mb: project.link ? 3 : 0,
-                  }}
-                >
-                  {project.tech.map((tech) => (
-                    <Box
-                      key={tech}
-                      sx={{
-                        px: 1.5,
-                        py: 0.5,
-                        borderRadius: 1,
-                        bgcolor: 'rgba(255, 255, 255, 0.12)', // 테두리 대신 배경색을 소폭 강조
-                        fontSize: { xs: '0.7rem', md: '0.75rem' },
-                        color: 'rgba(255, 255, 255, 0.9)', // 부드러운 흰색
-                        fontWeight: 500,
-                      }}
-                    >
-                      {tech}
-                    </Box>
-                  ))}
-                </Box>
-
-                {/* 사이트 보러가기 버튼 */}
-                {project.link && (
-                  <Box
-                    component="a"
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1,
-                      px: 3,
-                      py: 1.5,
-                      borderRadius: 2,
-                      bgcolor: 'rgba(136, 206, 2, 0.1)',
-                      border: '1px solid #88CE02',
-                      width: 'fit-content',
-                      transition: 'all 0.3s ease',
-                      textDecoration: 'none',
-                      cursor: 'pointer',
-                      '&:hover': {
-                        bgcolor: 'rgba(136, 206, 2, 0.2)',
-                        transform: 'translateX(4px)',
-                      },
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontSize: { xs: '0.8rem', md: '0.9rem' },
-                        color: '#88CE02',
-                        fontWeight: 600,
-                      }}
-                    >
-                      사이트 보러가기
-                    </Typography>
-                    <Box
-                      component="span"
-                      sx={{
-                        color: '#88CE02',
-                        fontSize: '1.2rem',
-                        lineHeight: 1,
-                      }}
-                    >
-                      →
-                    </Box>
-                  </Box>
-                )}
-              </Box>
-            </Box>
-
-            {/* 하단 텍스트 정보 */}
-            <Box>
-              <Typography
-                sx={{
-                  fontSize: { xs: '1.1rem', md: '1.3rem' },
-                  fontWeight: 700,
-                  color: 'white',
-                  mb: 0.5,
-                }}
-              >
-                {project.title}
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: { xs: '0.8rem', md: '0.9rem' },
-                  color: 'rgba(255, 255, 255, 0.6)',
-                  fontWeight: 500,
-                }}
-              >
-                {project.subtitle}
-              </Typography>
-            </Box>
-          </Box>
-        );
-      })}
+        {projects.map((project, index) => (
+          <ProjectCard key={project.id} project={project} index={index} />
+        ))}
       </Box>
     </Box>
   );
