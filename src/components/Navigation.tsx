@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { AppBar, Toolbar, Box, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { AppBar, Toolbar, Box, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -65,33 +65,77 @@ export default function Navigation() {
   const drawer = (
     <Box
       sx={{
-        width: 250,
-        height: '100%',
-        bgcolor: 'background.paper',
-        pt: 2,
+        width: '100vw',
+        height: '100vh',
+        bgcolor: 'rgba(0, 0, 0, 0.7)',
+        backdropFilter: 'blur(20px)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        color: 'white',
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', px: 2, pb: 2 }}>
-        <IconButton onClick={handleDrawerToggle}>
-          <CloseIcon />
-        </IconButton>
-      </Box>
-      <List>
+      <IconButton 
+        onClick={handleDrawerToggle}
+        sx={{ 
+          position: 'absolute', 
+          top: 20, 
+          right: 20, 
+          color: 'white',
+          bgcolor: 'rgba(255, 255, 255, 0.1)',
+          '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.2)' }
+        }}
+      >
+        <CloseIcon sx={{ fontSize: '2rem' }} />
+      </IconButton>
+      
+      <List sx={{ width: '100%', textAlign: 'center' }}>
         {sections.map((section) => (
           <ListItem key={section.id} disablePadding>
             <ListItemButton
               onClick={() => scrollToSection(section.id)}
-              selected={activeSection === section.id}
               sx={{
-                '&.Mui-selected': {
-                  bgcolor: 'rgba(255, 255, 255, 0.1)',
-                  '&:hover': {
-                    bgcolor: 'rgba(255, 255, 255, 0.15)',
-                  },
+                py: 3,
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1,
+                '&:hover': {
+                  bgcolor: 'transparent',
                 },
               }}
             >
-              <ListItemText primary={section.label} />
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1.5,
+                  '&::before': {
+                    content: '""',
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    bgcolor: '#88CE02',
+                    opacity: activeSection === section.id ? 1 : 0,
+                    transform: activeSection === section.id ? 'scale(1)' : 'scale(0)',
+                    transition: 'all 0.4s ease',
+                  }
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: '2rem',
+                    fontWeight: 700,
+                    color: activeSection === section.id ? 'white' : 'rgba(255, 255, 255, 0.5)',
+                    transition: 'all 0.3s ease',
+                    letterSpacing: '-0.03em',
+                  }}
+                >
+                  {section.label}
+                </Typography>
+              </Box>
             </ListItemButton>
           </ListItem>
         ))}
@@ -104,13 +148,15 @@ export default function Navigation() {
       <AppBar
         position="fixed"
         sx={{
-          width: scrolled ? { xs: '90%', md: '600px' } : { xs: '95%', md: '1400px' },
+          width: scrolled 
+            ? { xs: '150px', md: '600px' } // 모바일에서 이름 + 버튼이 들어갈 정도로 폭 조정
+            : { xs: '95%', md: '1400px' },
           left: '50%',
           transform: 'translateX(-50%)',
           bgcolor: scrolled ? 'rgba(0, 0, 0, 0.85)' : 'rgba(0, 0, 0, 0.15)',
           backdropFilter: 'blur(10px)',
           boxShadow: scrolled ? '0 4px 30px rgba(0, 0, 0, 0.3)' : 'none',
-          transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)', // 전환 시간 연장
+          transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)', 
           mt: { xs: 1.5, md: 2 }, 
           borderRadius: '100px',
           border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -121,20 +167,44 @@ export default function Navigation() {
           sx={{ 
             display: 'flex',
             justifyContent: 'center', 
-            px: { xs: 3, md: 5 },
+            px: { xs: 2, md: 5 },
             minHeight: { xs: '48px', md: '52px' },
             transition: 'all 0.8s ease',
           }}
         >
-          {/* 로고 컨테이너 - 너비와 마진을 이용해 부드럽게 밀어냄 */}
+          {/* 모바일 전용: 스크롤 시 현재 섹션 이름 표시 */}
+          <Box
+            sx={{
+              display: { xs: scrolled ? 'flex' : 'none', md: 'none' },
+              alignItems: 'center',
+              gap: 1.5,
+              opacity: scrolled ? 1 : 0,
+              transition: 'all 0.5s ease',
+              mr: 1
+            }}
+          >
+            <Typography 
+              sx={{ 
+                fontSize: '0.85rem', 
+                fontWeight: 700, 
+                color: 'white',
+                letterSpacing: '-0.02em'
+              }}
+            >
+              {sections.find(s => s.id === activeSection)?.label || 'Menu'}
+            </Typography>
+            <Box sx={{ width: '1px', height: '12px', bgcolor: 'rgba(255, 255, 255, 0.2)' }} />
+          </Box>
+
+          {/* 로고 컨테이너 - 데스크톱 및 모바일(미스크롤시) */}
           <Box
             onClick={() => scrollToSection('hero')}
             className="clickable"
             sx={{
-              display: 'flex',
+              display: { xs: scrolled ? 'none' : 'flex', md: 'flex' },
               alignItems: 'center',
-              opacity: scrolled ? 0 : 1,
-              maxWidth: scrolled ? '0px' : '200px', // 너비를 서서히 줄임
+              opacity: scrolled ? { xs: 0, md: 0 } : 1,
+              maxWidth: scrolled ? '0px' : '200px', 
               transform: scrolled ? 'translateX(-20px)' : 'translateX(0)',
               transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
               overflow: 'hidden',
@@ -153,9 +223,10 @@ export default function Navigation() {
             BaeSuIn
           </Box>
 
-          {/* 가변 여백 박스 - 메뉴를 오른쪽으로 밀었다가 중앙으로 가져옴 */}
+          {/* 가변 여백 박스 (데스크톱 전용) */}
           <Box 
             sx={{ 
+              display: { xs: 'none', md: 'block' },
               flexGrow: scrolled ? 0 : 1, 
               width: scrolled ? 0 : 'auto',
               transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)' 
@@ -205,15 +276,6 @@ export default function Navigation() {
             ))}
           </Box>
 
-          {/* 우측 균형을 위한 빈 박스 (스크롤 전 메뉴를 오른쪽으로 밀기 위함) */}
-          <Box 
-            sx={{ 
-              display: { xs: 'none', md: 'block' },
-              width: scrolled ? 0 : 0, // 기본값 0, 필요시 로고와 대칭되는 값 설정 가능
-              transition: 'all 0.8s ease' 
-            }} 
-          />
-
           {/* Mobile Menu Button */}
           <IconButton
             className="clickable"
@@ -222,6 +284,7 @@ export default function Navigation() {
               color: 'white',
               ml: scrolled ? 0 : 'auto',
               transition: 'all 0.8s ease',
+              p: 1
             }}
             onClick={handleDrawerToggle}
           >
@@ -232,13 +295,18 @@ export default function Navigation() {
 
       {/* Mobile Drawer */}
       <Drawer
-        anchor="right"
+        anchor="top"
         open={mobileOpen}
         onClose={handleDrawerToggle}
         sx={{
           display: { xs: 'block', md: 'none' },
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
+            width: '100%',
+            height: '100%',
+            bgcolor: 'transparent',
+            backgroundImage: 'none',
+            boxShadow: 'none',
           },
         }}
       >
