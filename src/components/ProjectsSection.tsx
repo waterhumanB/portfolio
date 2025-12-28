@@ -79,31 +79,33 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
           />
         </Box>
 
-        {/* 호버 시 상세 정보 오버레이 - 초대형 사각형으로 만들어 모든 틈새 강제 차단 */}
+        {/* 호버 시 상세 정보 오버레이 - 모바일 짤림 방지 및 최적화 */}
         <Box
           className="project-overlay"
           sx={{
             position: 'absolute',
-            inset: -50, // 훨씬 크게 확장
+            inset: -10, // 여백 확보를 위해 인셋 축소 (10px)
             background: 'rgba(0, 0, 0, 0.85)', 
             backdropFilter: 'blur(15px)',
             WebkitBackdropFilter: 'blur(15px)',
-            borderRadius: 0, // 곡률을 없애서 사각형 끝까지 꽉 채움
+            borderRadius: 0,
             opacity: 0,
             transition: 'opacity 0.3s ease',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            p: { xs: 3 + 50/8, md: 6 + 50/8 }, // 패딩 보정
+            // 인셋(10px=1.25)을 고려한 패딩 최적화
+            p: { xs: 1.25 + 2, md: 1.25 + 5 }, 
             zIndex: 2,
+            overflowY: 'auto', // 내용이 넘칠 경우 스크롤 허용
           }}
         >
           <Box>
             <Typography
               sx={{
-                fontSize: { xs: '0.75rem', md: '0.85rem' },
+                fontSize: { xs: '0.7rem', md: '0.85rem' },
                 color: '#88CE02',
-                mb: 1,
+                mb: { xs: 0.5, md: 1 },
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '0.1em'
@@ -115,10 +117,10 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
             <Typography
               variant="h5"
               sx={{
-                fontSize: { xs: '1.2rem', md: '1.5rem' },
+                fontSize: { xs: '1rem', md: '1.5rem' },
                 color: 'white',
                 fontWeight: 800,
-                mb: 2,
+                mb: { xs: 1, md: 2 },
                 lineHeight: 1.2
               }}
             >
@@ -127,10 +129,10 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
 
             <Typography
               sx={{
-                fontSize: { xs: '0.85rem', md: '0.95rem' },
+                fontSize: { xs: '0.75rem', md: '0.95rem' },
                 color: 'rgba(255, 255, 255, 0.7)',
-                lineHeight: 1.6,
-                mb: 3,
+                lineHeight: { xs: 1.4, md: 1.6 },
+                mb: { xs: 1.5, md: 3 },
               }}
             >
               {project.description}
@@ -140,19 +142,19 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
               sx={{
                 display: 'flex',
                 flexWrap: 'wrap',
-                gap: 1,
-                mb: project.link ? 4 : 0,
+                gap: 0.5,
+                mb: project.link ? { xs: 2, md: 4 } : 0,
               }}
             >
               {project.tech.map((tech: string) => (
                 <Box
                   key={tech}
                   sx={{
-                    px: 1.5,
+                    px: { xs: 1, md: 1.5 },
                     py: 0.5,
                     borderRadius: 1,
                     bgcolor: 'rgba(255, 255, 255, 0.1)',
-                    fontSize: '0.75rem',
+                    fontSize: { xs: '0.65rem', md: '0.75rem' },
                     color: 'rgba(255, 255, 255, 0.9)',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
                   }}
@@ -173,8 +175,8 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: 1,
-                  px: 3,
-                  py: 1.2,
+                  px: { xs: 2, md: 3 },
+                  py: { xs: 0.8, md: 1.2 },
                   borderRadius: '100px',
                   bgcolor: '#88CE02',
                   color: 'black',
@@ -182,7 +184,7 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
                   transition: 'all 0.3s ease',
                   textDecoration: 'none',
                   fontWeight: 700,
-                  fontSize: '0.9rem',
+                  fontSize: { xs: '0.8rem', md: '0.9rem' },
                 }}
               >
                 View Project →
