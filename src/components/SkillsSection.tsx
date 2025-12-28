@@ -1,28 +1,12 @@
 'use client';
 
-import { Box, Typography, IconButton } from '@mui/material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { skills, skillColors } from '../data/skills';
+import { Box, Typography } from '@mui/material';
+import { interests, interestColors } from '../data/skills';
 import FallingText from './FallingText';
+import ShinyText from './ShinyText';
 
 export default function SkillsSection() {
-  const allSkills = skills.flatMap((group) => group.items);
-  const skillsText = allSkills.join(' ');
-
-  const scrollToNext = () => {
-    const container = document.querySelector('[ref]') as HTMLElement;
-    if (container) {
-      container.scrollBy({
-        left: window.innerWidth,
-        behavior: 'smooth'
-      });
-    } else {
-      window.scrollBy({
-        left: window.innerWidth,
-        behavior: 'smooth'
-      });
-    }
-  };
+  const interestsText = interests.join('::');
 
   return (
     <Box
@@ -39,17 +23,24 @@ export default function SkillsSection() {
         overflow: 'visible',
       }}
     >
-      <Typography
-        variant="h2"
-        sx={{
-          mb: { xs: 2, sm: 3, md: 4 },
-          fontWeight: 700,
-          textAlign: 'center',
-          fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
-        }}
-      >
-        My Skills
-      </Typography>
+      <Box sx={{ mb: { xs: 2, sm: 3, md: 4 }, px: { xs: 3, md: 6 }, maxWidth: '1400px', width: '100%' }}>
+        <ShinyText
+          text="Interests"
+          disabled={false}
+          speed={3}
+          className="section-title"
+        />
+        <Typography
+          sx={{
+            mt: 0.5,
+            fontSize: { xs: '0.9rem', md: '1rem' },
+            color: 'rgba(255, 255, 255, 0.6)',
+            maxWidth: '600px',
+          }}
+        >
+          나를 멈추지 않게 하는 에너지의 원천 - click & drag
+        </Typography>
+      </Box>
 
       <Box sx={{
         width: '100%',
@@ -58,16 +49,16 @@ export default function SkillsSection() {
         maxHeight: { xs: '60vh', sm: '65vh', md: '70vh' }
       }}>
         <FallingText
-          text={skillsText}
-          highlightWords={['React', 'Next.js', 'TypeScript', 'ChatGPT', 'Claude']}
+          text={interestsText}
+          highlightWords={['Weight Training', 'AI', 'Success', 'Growth']}
           highlightClass="highlighted"
-          trigger="hover"
+          trigger="click"
           backgroundColor="transparent"
           wireframes={false}
           gravity={0.8}
           fontSize={{ xs: '2rem', sm: '3rem', md: '4rem' }}
           mouseConstraintStiffness={0.9}
-          skillColors={skillColors}
+          skillColors={interestColors}
         />
       </Box>
     </Box>

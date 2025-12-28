@@ -1,44 +1,25 @@
-import { Skill } from '../types';
-
-export const skillColors: { [key: string]: string } = {
-  // Frontend
-  HTML: '#E34F26',
-  CSS: '#1572B6',
-  JS: '#F7DF1E',
-  TS: '#3178C6',
-  React: '#61DAFB',
-  'Next.js': '#000000',
-  Puppeteer: '#40B5A4',
-
-  // Marketing
-  SEO: '#4285F4',
-  'Keyword Analysis': '#FF6B6B',
-  Crawling: '#9B59B6',
-  'Digital Mkt': '#E74C3C',
-  'Blog Mkt': '#3498DB',
-  CapCut: '#000000',
-
-  // AI
-  Cursor: '#6366F1',
-  ChatGPT: '#10A37F',
-  Gemini: '#8E75FF',
-  Claude: '#CC9B7A',
+export const interestColors: { [key: string]: string } = {
+  'Weight Training': '#FF5252',
+  Running: '#03A9F4',
+  Automation: '#00BCD4',
+  AI: '#9C27B0',
+  Walking: '#8BC34A',
+  Dog: '#FF9800',
+  Cat: '#FFEB3B',
+  'Chicken Breast': '#FF80AB',
+  Growth: '#4CAF50',
+  Success: '#FFD700',
 };
 
-export const skills: Skill[] = [
-  {
-    category: 'Frontend',
-    items: ['HTML', 'CSS', 'JS', 'TS', 'React', 'Next.js', 'Puppeteer'],
-    color: '#00B4DB',
-  },
-  {
-    category: 'Marketing',
-    items: ['SEO', 'Keyword Analysis', 'Crawling', 'Digital Mkt', 'Blog Mkt', 'CapCut'],
-    color: '#4169E1',
-  },
-  {
-    category: 'AI',
-    items: ['Cursor', 'ChatGPT', 'Gemini', 'Claude'],
-    color: '#00FF41',
-  },
+export const interests = [
+  'Weight Training',
+  'Running',
+  'Automation',
+  'AI',
+  'Walking',
+  'Dog',
+  'Cat',
+  'Chicken Breast',
+  'Growth',
+  'Success',
 ];

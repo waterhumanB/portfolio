@@ -1,127 +1,260 @@
 'use client';
 
-import { useRef, useLayoutEffect } from 'react';
 import { Box, Typography } from '@mui/material';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { projects } from '../data/projects';
-import ProjectCard from './ProjectCard';
+import ShinyText from './ShinyText';
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+// 각 프로젝트별 배경색 정의
+const projectBackgrounds = [
+  'linear-gradient(135deg, #F4E5C3 0%, #E8D5A8 100%)', // 베이지/크림
+  'linear-gradient(135deg, #C3E5F4 0%, #A8D5E8 100%)', // 하늘색
+  'linear-gradient(135deg, #F5F5DC 0%, #E8E8D0 100%)', // 베이지/아이보리 (하랑마케팅)
+  'linear-gradient(135deg, #FFE5E5 0%, #FFD1D1 100%)', // 연한 핑크
+];
 
 export default function ProjectsSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
-  const moveContainerRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
-      // [1] 이동 거리 계산: 마지막 프로젝트가 화면 중앙에 오도록
-      const moveDistance = -(projects.length - 1) * 100;
-
-      // [2] 타임라인 생성 (이동 -> 대기)
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: triggerRef.current,
-          pin: true, // 화면 고정
-          scrub: 1, // 부드러운 스크롤
-          start: "top top",
-          end: `+=${projects.length * 1200}`, // 스크롤 길이 조금 더 늘림 (여유 확보)
-          invalidateOnRefresh: true,
-        },
-      });
-
-      // 동작 1: 가로로 이동
-      tl.to(moveContainerRef.current, {
-        x: `${moveDistance}vw`,
-        ease: "none",
-        duration: 8, // 전체 타임라인에서의 비율 (10만큼 이동)
-      })
-      // 동작 2: 마지막에서 잠시 멈춤 (Hold) - 여기가 핵심!
-      .to({}, { 
-        duration: 1 // 2만큼의 비율동안 멈춰있음 (여운 남기기)
-      });
-
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <Box 
-      ref={sectionRef} 
-      sx={{ 
-        overflow: 'hidden', 
-        backgroundColor: 'background.default',
-        position: 'relative'
-      }}
-    >
-      <div ref={triggerRef}>
-        
-        {/* 헤더 */}
-        <Box 
-            sx={{ 
-                position: 'absolute', 
-                top: { xs: 20, md: 40 }, 
-                left: 0, 
-                width: '100%', 
-                zIndex: 10,
-                textAlign: 'center',
-                pointerEvents: 'none'
-            }}
-        >
-            <Typography
-            variant="h2"
-            sx={{
-                fontWeight: 700,
-                fontSize: { xs: '2.5rem', sm: '3rem', md: '3.5rem' },
-                color: 'text.primary',
-                textShadow: '0 0 20px rgba(0,0,0,0.5)'
-            }}
-            >
-            Projects
-            </Typography>
-        </Box>
-
-        {/* 실제 움직이는 긴 컨테이너 */}
-        <Box
-          ref={moveContainerRef}
-          sx={{
-            display: 'flex',
-            // [3] 오른쪽 여백 추가 (paddingRight) 
-            // 마지막 아이템 뒤에 20vw 정도 여유 공간을 둬서 답답함을 없앰
-            width: `${(projects.length * 100) + 20}vw`, 
-            paddingRight: '20vw', 
-            height: '100vh',
-            willChange: 'transform',
-          }}
-        >
-          {projects.map((project, index) => (
-            <ProjectItem key={project.id} project={project} index={index} />
-          ))}
-        </Box>
-      </div>
-    </Box>
-  );
-}
-
-function ProjectItem({ project, index }: { project: any; index: number }) {
   return (
     <Box
       sx={{
-        width: '100vw',
-        height: '100vh',
+        py: { xs: 8, md: 12 },
+        px: { xs: 2, md: 4 },
+        bgcolor: 'transparent',
+        minHeight: '100vh',
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: 'column',
         justifyContent: 'center',
-        px: { xs: 1.5, sm: 2, md: 10 },
-        py: { xs: 2, md: 0 },
-        borderRight: '1px solid rgba(255,255,255,0.05)',
       }}
     >
-      <ProjectCard project={project} isVisible={true} />
+      {/* 헤더 */}
+      <Box sx={{ mb: { xs: 6, md: 8 }, px: { xs: 3, md: 6 }, maxWidth: '1400px' }}>
+        <ShinyText
+          text="Projects"
+          disabled={false}
+          speed={3}
+          className="section-title"
+        />
+        <Typography
+          sx={{
+            mt: 0.5,
+            fontSize: { xs: '0.9rem', md: '1rem' },
+            color: 'rgba(255, 255, 255, 0.6)',
+            maxWidth: '600px',
+          }}
+        >
+          비즈니스 문제를 해결하고 성장을 만든 기록.
+        </Typography>
+      </Box>
+
+      {/* 2x2 그리드 */}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+          gap: { xs: 3, md: 4 },
+          maxWidth: '1400px',
+          width: '100%',
+          margin: '0 auto',
+        }}
+      >
+        {projects.map((project, index) => (
+          <Box
+            key={project.id}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+              // 오른쪽 열(홀수 인덱스)을 아래로 이동
+              mt: { xs: 0, md: index % 2 === 1 ? 8 : 0 },
+              p: 0.5, // 약간의 패딩 추가
+            }}
+          >
+            {/* 이미지 카드 */}
+            <Box
+              sx={{
+                position: 'relative',
+                aspectRatio: '4/3',
+                borderRadius: { xs: 2.2, md: 3.2 },
+                background: projectBackgrounds[index % projectBackgrounds.length],
+                transition: 'box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                overflow: 'hidden',
+                '&:hover': {
+                  boxShadow: '0 16px 50px rgba(0, 0, 0, 0.6)',
+                  '& .project-overlay': {
+                    opacity: 1,
+                  },
+                },
+              }}
+            >
+              {/* 가운데 이미지 */}
+              <Box
+                className="project-image-container"
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '80%',
+                  height: '65%',
+                  borderRadius: { xs: 2, md: 2.5 },
+                  overflow: 'hidden',
+                  boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
+                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+              >
+                <Box
+                  className="project-image"
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    backgroundImage: `url(${project.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                />
+              </Box>
+
+              {/* 호버 시 상세 정보 오버레이 */}
+              <Box
+                className="project-overlay"
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'rgba(0, 0, 0, 0.6)',
+                  backdropFilter: 'blur(10px)',
+                  borderRadius: { xs: 1, md: 1 },
+                  opacity: 0,
+                  transition: 'opacity 0.4s ease',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  p: { xs: 3, md: 4 },
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: { xs: '0.75rem', md: '0.85rem' },
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    mb: 1,
+                    fontWeight: 500,
+                  }}
+                >
+                  {project.subtitle}
+                </Typography>
+
+                <Typography
+                  sx={{
+                    fontSize: { xs: '0.85rem', md: '0.95rem' },
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    lineHeight: 1.6,
+                    mb: 2,
+                  }}
+                >
+                  {project.description}
+                </Typography>
+
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 1,
+                    mb: project.link ? 3 : 0,
+                  }}
+                >
+                  {project.tech.map((tech) => (
+                    <Box
+                      key={tech}
+                      sx={{
+                        px: 1.5,
+                        py: 0.5,
+                        borderRadius: 1,
+                        bgcolor: 'rgba(255, 255, 255, 0.1)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        fontSize: { xs: '0.7rem', md: '0.75rem' },
+                        color: 'white',
+                        fontWeight: 500,
+                      }}
+                    >
+                      {tech}
+                    </Box>
+                  ))}
+                </Box>
+
+                {/* 사이트 보러가기 버튼 */}
+                {project.link && (
+                  <Box
+                    component="a"
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                      px: 3,
+                      py: 1.5,
+                      borderRadius: 2,
+                      bgcolor: 'rgba(136, 206, 2, 0.1)',
+                      border: '1px solid #88CE02',
+                      width: 'fit-content',
+                      transition: 'all 0.3s ease',
+                      textDecoration: 'none',
+                      cursor: 'pointer',
+                      '&:hover': {
+                        bgcolor: 'rgba(136, 206, 2, 0.2)',
+                        transform: 'translateX(4px)',
+                      },
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: { xs: '0.8rem', md: '0.9rem' },
+                        color: '#88CE02',
+                        fontWeight: 600,
+                      }}
+                    >
+                      사이트 보러가기
+                    </Typography>
+                    <Box
+                      component="span"
+                      sx={{
+                        color: '#88CE02',
+                        fontSize: '1.2rem',
+                        lineHeight: 1,
+                      }}
+                    >
+                      →
+                    </Box>
+                  </Box>
+                )}
+              </Box>
+            </Box>
+
+            {/* 하단 텍스트 정보 */}
+            <Box>
+              <Typography
+                sx={{
+                  fontSize: { xs: '1.1rem', md: '1.3rem' },
+                  fontWeight: 700,
+                  color: 'white',
+                  mb: 0.5,
+                }}
+              >
+                {project.title}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: { xs: '0.8rem', md: '0.9rem' },
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  fontWeight: 500,
+                }}
+              >
+                {project.subtitle}
+              </Typography>
+            </Box>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 }

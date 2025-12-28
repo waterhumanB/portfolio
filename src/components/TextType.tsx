@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 interface TextTypeProps {
   text: string[];
@@ -63,11 +63,11 @@ export default function TextType({
   }, [showCursor]);
 
   return (
-    <Typography variant="h1" sx={{ color: 'common.white' }}>
+    <Box component="span" sx={{ color: 'common.white' }}>
       {displayText}
       {showCursor && (
         <span style={{ opacity: showCursorBlink ? 1 : 0 }}>{cursorCharacter}</span>
       )}
-    </Typography>
+    </Box>
   );
 }

@@ -9,6 +9,7 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import { careerHistory } from '../data/career';
 import { useEffect, useRef, useState } from 'react';
+import ShinyText from './ShinyText';
 
 export default function CareerSection() {
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
@@ -57,17 +58,25 @@ export default function CareerSection() {
         px: 2,
       }}
     >
-      <Typography
-        variant="h2"
-        sx={{
-          textAlign: 'center',
-          mb: 8,
-          fontWeight: 700,
-          fontSize: { xs: '2.5rem', sm: '3rem', md: '3.5rem' },
-        }}
-      >
-        Career
-      </Typography>
+      <Box sx={{ mb: 8, px: { xs: 3, md: 6 }, maxWidth: '1400px', mx: 'auto', textAlign: 'center' }}>
+        <ShinyText
+          text="Experience"
+          disabled={false}
+          speed={3}
+          className="section-title"
+        />
+        <Typography
+          sx={{
+            mt: 0.5,
+            fontSize: { xs: '0.9rem', md: '1rem' },
+            color: 'rgba(255, 255, 255, 0.6)',
+            maxWidth: '600px',
+            mx: 'auto',
+          }}
+        >
+          개발자의 시야를 비즈니스 전체로 확장해온 과정.
+        </Typography>
+      </Box>
 
       <Timeline position="alternate">
         {careerHistory.map((career, index) => {

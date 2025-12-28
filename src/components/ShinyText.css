@@ -1,0 +1,38 @@
+.shiny-text {
+  color: #ffffff; /* [NEW] 기본 글자 색상은 흰색 */
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* 그라데이션이 흰색 텍스트 위로 잘 보이도록 투명도와 블렌딩 효과 활용 */
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.7); 
+  
+  display: inline-block;
+  animation: shine 5s linear infinite;
+}
+
+.shiny-text.section-title {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  padding: 0.2em 0; /* 애니메이션 중 위아래 잘림 방지 */
+}
+
+@keyframes shine {
+  0% {
+    background-position: 200%;
+  }
+  100% {
+    background-position: -200%;
+  }
+}
+
+.shiny-text.disabled {
+  animation: none;
+}

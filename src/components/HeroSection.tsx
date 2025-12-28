@@ -1,11 +1,11 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
-import GitHubIcon from '@mui/icons-material/GitHub';
 import TextType from './TextType';
-import Particles from './Particles';
+import WavingHand from './WavingHand';
 
-const ROLES = ['Marketer', 'Frontend Developer', '안녕하세요! 배수인입니다.'];
+// 애니메이션으로 바뀌는 문구들 (나중에 수정 가능)
+const ANIMATED_ROLES = ['Code', 'Vibe'];
 
 export default function HeroSection() {
   return (
@@ -19,43 +19,168 @@ export default function HeroSection() {
         overflow: 'hidden',
       }}
     >
-      <Particles />
-
       <Box
         sx={{
           position: 'relative',
           zIndex: 1,
-          textAlign: 'center',
-          px: 2,
+          px: { xs: 3, md: 6 },
+          maxWidth: '1400px',
+          width: '100%',
         }}
       >
-        <TextType
-          text={ROLES}
-          typingSpeed={75}
-          pauseDuration={1500}
-          showCursor={true}
-          cursorCharacter="|"
-        />
-
+        {/* 인사말 */}
         <Box
           sx={{
-            mt: 4,
             opacity: 0,
-            animation: 'fadeIn 1s ease-in-out 1s forwards',
+            animation: 'fadeIn 0.8s ease-out forwards',
             '@keyframes fadeIn': {
-              from: { opacity: 0, transform: 'translateY(20px)' },
+              from: { opacity: 0, transform: 'translateY(-20px)' },
               to: { opacity: 1, transform: 'translateY(0)' },
             },
           }}
         >
-          <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 300 }}>
-            Seoul, Sillim-dong | 010-4430-7175 | dpfflsk45@gmail.com
+          <Typography
+            sx={{
+              fontSize: { xs: '1rem', md: '1.2rem' },
+              fontWeight: 400,
+              color: 'rgba(255, 255, 255, 0.7)',
+              mb: 2,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
+            <WavingHand /> Hey! It's me Bae SuIn,
           </Typography>
+        </Box>
 
-          <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', gap: 2 }}>
-            <a href="https://github.com/waterhumanB" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', display: 'flex' }}>
-              <GitHubIcon sx={{ color: 'text.secondary', cursor: 'pointer' }} />
-            </a>
+        {/* 메인 타이틀 */}
+        <Box
+          sx={{
+            mb: 4,
+            opacity: 0,
+            animation: 'fadeIn 0.8s ease-out 0.3s forwards',
+          }}
+        >
+          <Typography
+            component="h1"
+            sx={{
+              fontSize: { xs: '2.5rem', sm: '3.5rem', md: '5rem', lg: '6rem' },
+              fontWeight: 700,
+              lineHeight: 1.2,
+              mb: 2,
+            }}
+          >
+            Crafting{' '}
+            <Box
+              component="span"
+              sx={{
+                background: 'linear-gradient(90deg, #88CE02, #5FB709)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                display: 'inline',
+              }}
+            >
+              <TextType
+                text={ANIMATED_ROLES}
+                typingSpeed={100}
+                pauseDuration={2000}
+                showCursor={true}
+                cursorCharacter="|"
+              />
+            </Box>
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: { xs: '2.5rem', sm: '3.5rem', md: '5rem', lg: '6rem' },
+              fontWeight: 700,
+              lineHeight: 1.2,
+            }}
+          >
+            that inspire & engage.
+          </Typography>
+        </Box>
+
+        {/* 설명 문구 (항상 유지) */}
+        <Box
+          sx={{
+            maxWidth: '840px',
+            mb: 5,
+            opacity: 0,
+            animation: 'fadeIn 0.8s ease-out 0.6s forwards',
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: { xs: '1rem', md: '1.2rem' },
+              color: 'rgba(255, 255, 255, 0.8)',
+              lineHeight: 1.8,
+            }}
+          >
+            데이터를 이해하는 개발자, 코드를 이해하는 마케터. 두 영역의 경계를 허무는 크리에이터 배수인입니다.
+
+단순한 웹사이트가 아닌, 비즈니스 목표를 달성하는 디지털 솔루션을 설계합니다.
+          </Typography>
+        </Box>
+
+        {/* 연락처 정보 */}
+        <Box
+          sx={{
+            opacity: 0,
+            animation: 'fadeIn 0.8s ease-out 0.9s forwards',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: { xs: 1.5, md: 2 },
+              alignItems: 'center',
+              mb: 3,
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: { xs: '0.9rem', md: '1rem' },
+                color: 'rgba(255, 255, 255, 0.7)',
+              }}
+            >
+              Seoul, Sillim-dong
+            </Typography>
+            <Box
+              component="span"
+              sx={{
+                display: { xs: 'none', md: 'block' },
+                width: '1px',
+                height: '14px',
+                bgcolor: 'rgba(255, 255, 255, 0.3)',
+              }}
+            />
+            <Typography
+              sx={{
+                fontSize: { xs: '0.9rem', md: '1rem' },
+                color: 'rgba(255, 255, 255, 0.7)',
+              }}
+            >
+              dpfflsk45@gmail.com
+            </Typography>
+            <Box
+              component="span"
+              sx={{
+                display: { xs: 'none', md: 'block' },
+                width: '1px',
+                height: '14px',
+                bgcolor: 'rgba(255, 255, 255, 0.3)',
+              }}
+            />
+            <Typography
+              sx={{
+                fontSize: { xs: '0.9rem', md: '1rem' },
+                color: 'rgba(255, 255, 255, 0.7)',
+              }}
+            >
+              010-4430-7175
+            </Typography>
           </Box>
         </Box>
       </Box>

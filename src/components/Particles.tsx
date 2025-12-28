@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useMemo } from 'react';
+import { Box } from '@mui/material';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as random from 'maath/random';
@@ -38,8 +39,18 @@ function ParticleField() {
 
 export default function Particles() {
   return (
-    <Canvas camera={{ position: [0, 0, 1] }} style={{ position: 'absolute', inset: 0 }}>
-      <ParticleField />
-    </Canvas>
+    <Box
+      sx={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: -1,
+        pointerEvents: 'none',
+        background: '#000000',
+      }}
+    >
+      <Canvas camera={{ position: [0, 0, 1] }}>
+        <ParticleField />
+      </Canvas>
+    </Box>
   );
 }

@@ -66,7 +66,7 @@ export default function FallingText({
 
   useEffect(() => {
     if (!textRef.current) return;
-    const words = text.split(' ');
+    const words = text.split('::').map(w => w.trim()).filter(Boolean);
     const newHTML = words
       .map(word => {
         const isHighlighted = highlightWords.some(hw => word.startsWith(hw));

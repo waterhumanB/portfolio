@@ -4,6 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Inter } from 'next/font/google';
 import { theme } from '../src/theme/theme';
+import Particles from '../src/components/Particles';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -24,6 +25,7 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
+            <Particles />
             {children}
           </ThemeProvider>
         </AppRouterCacheProvider>
