@@ -23,10 +23,10 @@ export default function Footer() {
           pt: { xs: 6, md: 8 },
           pb: { xs: 4, md: 5 }, // 카드 내부 하단 여백 축소
           px: { xs: 4, md: 8 },
-          bgcolor: '#0A0A0A',
+          bgcolor: '#020205', // 우주 배경색과 완벽히 일치
           borderRadius: { xs: '24px', md: '40px' },
-          border: '1px solid rgba(255, 255, 255, 0.05)',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)',
+          border: '1px solid rgba(255, 255, 255, 0.08)', // 경계선 명확화
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
         }}
       >
         <Box

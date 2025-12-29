@@ -225,7 +225,6 @@ export default function ProjectsSection() {
     <Box
       sx={{
         py: { xs: 8, md: 12 },
-        px: { xs: 2, md: 4 },
         bgcolor: 'transparent',
         minHeight: '100vh',
         display: 'flex',
@@ -233,41 +232,42 @@ export default function ProjectsSection() {
         justifyContent: 'center',
       }}
     >
-      {/* 헤더 */}
-      <Box sx={{ mb: { xs: 6, md: 8 }, px: { xs: 3, md: 6 }, maxWidth: '1400px' }}>
-        <ShinyText
-          text="Projects"
-          disabled={false}
-          speed={3}
-          className="section-title"
-        />
-        <Typography
+      {/* 정렬을 위한 통합 컨테이너 */}
+      <Box sx={{ maxWidth: '1400px', mx: 'auto', px: { xs: 3, md: 6 }, width: '100%' }}>
+        {/* 헤더 */}
+        <Box sx={{ mb: { xs: 6, md: 8 } }}>
+          <ShinyText
+            text="Projects"
+            disabled={false}
+            speed={3}
+            className="section-title"
+          />
+          <Typography
+            sx={{
+              mt: 1,
+              fontSize: { xs: '0.9rem', md: '1rem' },
+              color: 'rgba(255, 255, 255, 0.5)',
+              maxWidth: '600px',
+              lineHeight: 1.6
+            }}
+          >
+            성장의 기록. 비즈니스 가치를 창출하고 문제를 해결한 주요 프로젝트들입니다.
+          </Typography>
+        </Box>
+
+        {/* 2x2 그리드 */}
+        <Box
           sx={{
-            mt: 1,
-            fontSize: { xs: '0.9rem', md: '1rem' },
-            color: 'rgba(255, 255, 255, 0.5)',
-            maxWidth: '600px',
-            lineHeight: 1.6
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+            gap: { xs: 4, md: 6 },
+            width: '100%',
           }}
         >
-          성장의 기록. 비즈니스 가치를 창출하고 문제를 해결한 주요 프로젝트들입니다.
-        </Typography>
-      </Box>
-
-      {/* 2x2 그리드 */}
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
-          gap: { xs: 4, md: 6 },
-          maxWidth: '1400px',
-          width: '100%',
-          margin: '0 auto',
-        }}
-      >
-        {projects.map((project, index) => (
-          <ProjectCard key={project.id} project={project} index={index} />
-        ))}
+          {projects.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} />
+          ))}
+        </Box>
       </Box>
     </Box>
   );

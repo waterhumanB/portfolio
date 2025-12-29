@@ -85,7 +85,7 @@ export default function TechStackSection() {
           display: 'flex',
           gap: 3,
           overflowX: 'hidden',
-          py: 2, // 호버 시 위로 올라가는 공간 확보
+          py: 5, // 호버 시 그림자가 잘리지 않도록 여백 대폭 확보 (기존 2)
           '&::-webkit-scrollbar': { display: 'none' },
           msOverflowStyle: 'none',
           scrollbarWidth: 'none',

@@ -67,8 +67,7 @@ export default function Navigation() {
       sx={{
         width: '100vw',
         height: '100vh',
-        bgcolor: 'rgba(0, 0, 0, 0.7)',
-        backdropFilter: 'blur(20px)',
+        bgcolor: '#020205', // 투명도 제거, 푸터와 완전 동일화
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -153,9 +152,9 @@ export default function Navigation() {
             : { xs: '95%', md: '1400px' },
           left: '50%',
           transform: 'translateX(-50%)',
-          bgcolor: scrolled ? 'rgba(0, 0, 0, 0.85)' : 'rgba(0, 0, 0, 0.15)',
-          backdropFilter: 'blur(10px)',
-          boxShadow: scrolled ? '0 4px 30px rgba(0, 0, 0, 0.3)' : 'none',
+          bgcolor: scrolled ? '#020205' : 'rgba(255, 255, 255, 0.05)', // 불투명 솔리드 컬러로 변경
+          backdropFilter: scrolled ? 'none' : 'blur(10px)',
+          boxShadow: scrolled ? '0 10px 40px rgba(0, 0, 0, 0.5)' : 'none',
           transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)', 
           mt: { xs: 1.5, md: 2 }, 
           borderRadius: '100px',
