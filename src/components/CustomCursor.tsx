@@ -64,15 +64,14 @@ export default function CustomCursor() {
       style={{
         width: '12px',
         height: '12px',
-        backgroundColor: '#000', // 검정색 (확실한 가시성)
-        border: '2px solid #fff', // 흰색 테두리
+        backgroundColor: '#fff', // 반전 효과를 위해 흰색
         borderRadius: '50%',
         position: 'fixed',
         top: 0,
         left: 0,
         pointerEvents: 'none',
         zIndex: 9999999,
-        // mixBlendMode: 'difference', // 제거 (배경색에 따라 안 보일 위험 방지)
+        mixBlendMode: 'difference', // 반전 효과 복구
         willChange: 'transform',
         opacity: 0,
       }}
