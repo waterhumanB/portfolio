@@ -1,12 +1,13 @@
 'use client';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
+import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import { careerHistory } from '../data/career';
 import { useEffect, useRef, useState } from 'react';
 import ShinyText from './ShinyText';
@@ -14,6 +15,8 @@ import ShinyText from './ShinyText';
 export default function CareerSection() {
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -78,13 +81,16 @@ export default function CareerSection() {
         </Typography>
       </Box>
 
-      <Box sx={{ maxWidth: '1400px', width: '100%', mx: 'auto' }}>
+      <Box sx={{ maxWidth: '1400px', width: '100%', mx: 'auto', px: { xs: 0, md: 0 } }}>
         <Timeline position="alternate">
           {careerHistory.map((career, index) => {
             const isVisible = visibleItems.includes(index);
 
             return (
               <TimelineItem key={career.id}>
+                {/* 밸런스 유지를 위한 빈 공간 (중앙 정렬 보장) */}
+                <TimelineOppositeContent sx={{ flex: 1, py: '12px', px: { xs: 1, md: 2 } }} />
+
                 <TimelineSeparator>
                   {/* 동그라미 */}
                   <TimelineDot
@@ -107,6 +113,7 @@ export default function CareerSection() {
                       sx={{
                         bgcolor: 'rgba(255, 255, 255, 0.3)',
                         width: 2,
+                        flexGrow: 1, // 선이 끊기지 않고 꽉 차게
                         position: 'relative',
                         overflow: 'hidden',
                         '&::before': {
@@ -126,7 +133,7 @@ export default function CareerSection() {
                   )}
                 </TimelineSeparator>
 
-                <TimelineContent>
+                <TimelineContent sx={{ py: '12px', px: { xs: 1, md: 2 }, flex: 1 }}>
                   <Box
                     sx={{
                       transform: isVisible
@@ -135,6 +142,10 @@ export default function CareerSection() {
                       opacity: isVisible ? 1 : 0,
                       transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
                       transitionDelay: `${(careerHistory.length - 1 - index) * 0.3}s`,
+                      // 짝수(0,2,..) = 오른쪽 배치 -> 텍스트는 왼쪽 정렬(중앙 향함)
+                      // 홀수(1,3,..) = 왼쪽 배치 -> 텍스트는 오른쪽 정렬(중앙 향함)
+                      textAlign: index % 2 === 0 ? 'left' : 'right',
+                      mb: 0
                     }}
                   >
                     <Typography
@@ -163,6 +174,7 @@ export default function CareerSection() {
                         color: 'rgba(255, 255, 255, 0.85)',
                         lineHeight: 1.7,
                         fontSize: { xs: '0.9rem', md: '1rem' },
+                        whiteSpace: 'pre-line',
                       }}
                     >
                       {career.description}

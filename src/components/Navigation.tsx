@@ -21,10 +21,16 @@ export default function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      // Body가 fixed 상태(모달 오픈)일 때는 top offset을 스크롤 위치로 간주
+      let currentScrollY = window.scrollY;
+      if (document.body.style.position === 'fixed') {
+        currentScrollY = Math.abs(parseInt(document.body.style.top || '0', 10));
+      }
+
+      setScrolled(currentScrollY > 50);
 
       // 현재 보이는 섹션 감지
-      const scrollPosition = window.scrollY + 100;
+      const scrollPosition = currentScrollY + 100;
 
       for (const section of sections) {
         const element = document.getElementById(section.id);
@@ -41,7 +47,27 @@ export default function Navigation() {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // 모달 오픈 등으로 인한 스타일 변경 감지를 위해 MutationObserver 추가 혹은 단순히 리렌더링 시 체크
+    // 하지만 scroll 이벤트는 fixed 설정 시 발생하지 않을 수 있음.
+    // 따라서 interval이나 다른 트리거가 필요할 수 있으나, 
+    // 모달이 열리는 순간에는 window scroll event가 발생하지 않음 (window.scrollY -> 0은 레이아웃 변경?).
+    // ProjectDetailsModal에서 body styling을 할 때 window scroll이 0으로 변하는 것은 아님 (position fixed하면 뷰포트 기준이 달라짐).
+    // 하지만 fixed로 바뀌면 window.scrollY는 0이 됨.
+    
+    // Body 스타일 변경 감지 (모달 오픈 시 position: fixed로 바뀌는 순간 포착)
+    const observer = new MutationObserver(() => {
+      handleScroll();
+    });
+
+    observer.observe(document.body, {
+      attributes: true, 
+      attributeFilter: ['style']
+    });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   const handleDrawerToggle = () => {

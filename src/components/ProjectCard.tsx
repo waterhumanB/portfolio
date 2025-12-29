@@ -1,205 +1,322 @@
 'use client';
 
-import { Typography, Chip, Button, Box } from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Typography, Box, Button } from '@mui/material';
 import { Project } from '../types';
+import { useRef, useEffect } from 'react';
+import gsap from 'gsap';
 
 interface ProjectCardProps {
   project: Project;
-  isVisible: boolean;
+  index: number;
+  onOpenModal: (project: Project) => void;
 }
 
-export default function ProjectCard({ project, isVisible }: ProjectCardProps) {
+// 각 프로젝트별 배경색
+const projectBackgrounds = [
+  'linear-gradient(135deg, #F4E5C3 0%, #E8D5A8 100%)', // 베이지/크림
+  'linear-gradient(135deg, #C3E5F4 0%, #A8D5E8 100%)', // 하늘색
+  'linear-gradient(135deg, #F5F5DC 0%, #E8E8D0 100%)', // 베이지/아이보리
+  'linear-gradient(135deg, #FFE5E5 0%, #FFD1D1 100%)', // 연한 핑크
+];
+
+export default function ProjectCard({ project, index, onOpenModal }: ProjectCardProps) {
+  const containerRef = useRef<HTMLDivElement>(null); // 전체 래퍼 (이벤트 감지)
+  const cardRef = useRef<HTMLDivElement>(null);      // 실제 움직일 카드
+  const glowRef = useRef<HTMLDivElement>(null);      // 카드 내부 스포트라이트
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const card = cardRef.current;
+    const glow = glowRef.current;
+    
+    if (!container || !card || !glow) return;
+
+    // 마우스 움직임 핸들러 (Container 기준)
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = card.getBoundingClientRect(); // 카드의 좌표 기준
+      if (rect.width === 0 || rect.height === 0) return;
+
+      // 마우스 위치 (카드 중심 기준)
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      // 3D 회전 (Tilt)
+      const rotateX = ((y - centerY) / centerY) * -5;
+      const rotateY = ((x - centerX) / centerX) * 5;
+
+      gsap.to(card, {
+        rotationX: rotateX,
+        rotationY: rotateY,
+        duration: 0.5,
+        ease: 'power2.out',
+        transformPerspective: 1000,
+        transformOrigin: 'center center',
+      });
+
+      // Spotlight 위치
+      gsap.to(glow, {
+        x: x,
+        y: y,
+        opacity: 0.3, 
+        duration: 0.2,
+        ease: 'power1.out',
+      });
+    };
+
+    const handleMouseLeave = () => {
+      // 복귀 애니메이션
+      gsap.to(card, {
+        rotationX: 0,
+        rotationY: 0,
+        duration: 0.8,
+        ease: 'elastic.out(1, 0.5)',
+      });
+
+      gsap.to(glow, {
+        opacity: 0,
+        duration: 0.5,
+      });
+    };
+
+    container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      container.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
+
+
+  // 카드별 이미지 이동 방향 정의
+  const moveDir = [
+    { x: '-100%', y: '-100%' }, 
+    { x: '100%', y: '-100%' },
+    { x: '-100%', y: '100%' },
+    { x: '100%', y: '100%' },
+  ];
+  const currentDir = moveDir[index % 4];
+
+  // 각 카드의 배경색
+  const cardBgColor = projectBackgrounds[index % projectBackgrounds.length];
+
   return (
     <Box
+      ref={containerRef}
+      className="group"
+      onClick={() => onOpenModal(project)}
       sx={{
         display: 'flex',
-        flexDirection: { xs: 'column', md: 'row' },
-        gap: { xs: 2, sm: 3, md: 6 },
-        p: { xs: 2, sm: 3, md: 5 },
-        borderRadius: { xs: 3, md: 4 },
-        background: 'rgba(255, 255, 255, 0.05)',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        transition: 'all 0.3s ease',
-        maxWidth: '1400px',
+        flexDirection: 'column',
+        gap: 2.5, // 카드와 텍스트 사이 간격
+        mt: { xs: 0, md: index % 2 === 1 ? 8 : 0 }, // 지그재그 배치
+        cursor: 'pointer',
         width: '100%',
-        '&:hover': {
-          background: 'rgba(255, 255, 255, 0.08)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
-        },
+        perspective: '1000px', // 3D 효과를 위한 원근감
       }}
     >
-      {/* 이미지 섹션 */}
+      {/* 1. 실제 카드 영역 (3D Tilt 대상) */}
       <Box
+        ref={cardRef}
         sx={{
-          flex: { xs: '1 1 100%', md: '1 1 45%' },
+          position: 'relative',
           width: '100%',
+          aspectRatio: '4/3',
+          borderRadius: { xs: 3, md: 4 },
+          overflow: 'hidden',
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)',
+          background: cardBgColor,
+          transformStyle: 'preserve-3d',
+          willChange: 'transform',
+          outline: '1px solid transparent', // 렌더링 깨짐 방지
+          backfaceVisibility: 'hidden',
+          
+          // Hover Action (내부 요소 제어)
+          '.group:hover & .project-overlay': {
+            opacity: 1,
+            transform: 'translate(-50%, -50%) translate(0, 0)', 
+          },
+          '.group:hover & .project-image': {
+            transform: `translate(-50%, -50%) translate(${currentDir.x}, ${currentDir.y}) rotate(${index % 2 === 0 ? 10 : -10}deg)`,
+            opacity: 0, 
+          },
         }}
       >
+        {/* Spotlight Effect */}
         <Box
+          ref={glowRef}
           sx={{
-            position: 'relative',
-            width: '100%',
-            height: { xs: '200px', sm: '300px', md: '100%' },
-            minHeight: { md: '400px' },
-            borderRadius: { xs: 2, md: 3 },
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '500px',
+            height: '500px',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 60%)',
+            transform: 'translate(-50%, -50%)',
+            pointerEvents: 'none',
+            opacity: 0,
+            zIndex: 10,
+          }}
+        />
+
+        {/* 이미지 컨테이너 */}
+        <Box
+          className="project-image"
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%) translateZ(10px)',
+            width: '85%',
+            height: '70%',
+            borderRadius: 2,
             overflow: 'hidden',
-            transition: 'transform 0.3s ease',
-            '&:hover': {
-              transform: 'scale(1.02)',
-            },
+            boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+            zIndex: 2,
+            transition: 'all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)', 
+            bgcolor: 'white',
           }}
         >
-          <img
+          <Box
+            component="img"
             src={project.image}
             alt={project.title}
-            style={{
+            sx={{
               width: '100%',
               height: '100%',
               objectFit: 'cover',
+              objectPosition: 'top',
             }}
           />
         </Box>
+
+        {/* 오버레이 (화이트 박스) */}
+        <Box
+          className="project-overlay"
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            // 초기 위치: 반대 방향에서 대기
+            transform: `translate(-50%, -50%) translate(${currentDir.x === '-100%' ? '100%' : '-100%'}, ${currentDir.y === '-100%' ? '100%' : '-100%'})`, 
+            width: '85%', 
+            height: '70%',
+            borderRadius: 2,
+            bgcolor: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            p: 3,
+            opacity: 0,
+            zIndex: 3,
+            transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)', 
+            boxShadow: '0 15px 35px rgba(0,0,0,0.15)',
+            textAlign: 'center',
+          }}
+        >
+          <Typography
+            sx={{
+              color: '#888',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              fontSize: '0.7rem',
+              mb: 1,
+            }}
+          >
+            {project.subtitle}
+          </Typography>
+
+          <Typography
+            variant="h5"
+            sx={{
+              color: '#222',
+              fontWeight: 800,
+              fontSize: { xs: '1.1rem', md: '1.3rem' },
+              lineHeight: 1.2,
+              mb: 1.5,
+              wordBreak: 'keep-all',
+            }}
+          >
+            {project.title}
+          </Typography>
+
+          <Typography
+            sx={{
+              color: '#555',
+              fontSize: '0.8rem',
+              fontWeight: 500,
+              lineHeight: 1.4,
+              mb: 2,
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              wordBreak: 'keep-all',
+              opacity: 0.9,
+            }}
+          >
+            {project.description}
+          </Typography>
+
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: '#111', // 검정 버튼
+              color: 'white',
+              borderRadius: '50px',
+              px: 3,
+              py: 0.6,
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              textTransform: 'none',
+              boxShadow: 'none',
+              '&:hover': {
+                bgcolor: '#333',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                transform: 'translateY(-1px)',
+              },
+            }}
+          >
+            Explore
+          </Button>
+        </Box>
       </Box>
 
-      {/* 설명 섹션 */}
-      <Box
-        sx={{
-          flex: { xs: '1 1 100%', md: '1 1 55%' },
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            mb: { xs: 1, md: 2 },
-            fontWeight: 700,
-            fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2.5rem' },
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s',
+      {/* 2. 하단 텍스트 정보 */}
+      <Box sx={{ px: 1 }}>
+        <Typography 
+          sx={{ 
+            fontSize: { xs: '1.25rem', md: '1.5rem' }, 
+            fontWeight: 700, 
+            color: 'white',
+            mb: 0.5,
+            transition: 'color 0.3s',
+            '.group:hover &': { // 그룹 호버 시 색상 변경
+               color: '#88CE02'
+            }
           }}
         >
           {project.title}
         </Typography>
-
-        <Typography
-          variant="subtitle1"
-          sx={{
-            mb: { xs: 1.5, md: 3 },
-            color: 'rgba(255, 255, 255, 0.7)',
-            fontSize: { xs: '0.85rem', sm: '0.95rem', md: '1.1rem' },
-            fontWeight: 500,
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s',
+        <Typography 
+          sx={{ 
+            fontSize: '1rem', 
+            color: 'rgba(255, 255, 255, 0.6)', 
+            lineHeight: 1.5,
+            display: '-webkit-box',
+            WebkitLineClamp: 2, 
+            WebkitBoxOrient: 'vertical', 
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            // 높이 강제 제거 (자연스럽게 늘어나도록)
           }}
         >
-          {project.subtitle}
+          {project.overview || project.subtitle}
         </Typography>
-
-        <Typography
-          variant="body1"
-          sx={{
-            mb: { xs: 2, md: 4 },
-            lineHeight: { xs: 1.6, md: 1.8 },
-            color: 'rgba(255, 255, 255, 0.85)',
-            fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' },
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.5s',
-          }}
-        >
-          {project.description}
-        </Typography>
-
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: { xs: 1, md: 1.5 },
-            mb: { xs: 2, md: 4 },
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s',
-          }}
-        >
-          {project.tech.map((tech) => (
-            <Chip
-              key={tech}
-              label={tech}
-              sx={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: 'white',
-                fontWeight: 500,
-                fontSize: { xs: '0.7rem', sm: '0.75rem', md: '0.85rem' },
-                height: { xs: '24px', md: '32px' },
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                },
-              }}
-            />
-          ))}
-        </Box>
-
-        {project.link && (
-          <Button
-            variant="outlined"
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            endIcon={<ArrowForwardIcon sx={{ transition: 'transform 0.3s ease', fontSize: { xs: '1rem', md: '1.25rem' } }} />}
-            sx={{
-              borderRadius: 9999,
-              px: { xs: 3, md: 4 },
-              py: { xs: 1, md: 1.5 },
-              borderWidth: { xs: 1.5, md: 2 },
-              borderColor: 'rgba(255, 255, 255, 0.3)',
-              color: 'white',
-              fontWeight: 600,
-              fontSize: { xs: '0.8rem', sm: '0.85rem', md: '1rem' },
-              alignSelf: 'flex-start',
-              opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              position: 'relative',
-              overflow: 'hidden',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: '-100%',
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-                transition: 'left 0.5s ease',
-              },
-              '&:hover': {
-                borderColor: 'rgba(255, 255, 255, 0.8)',
-                backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 10px 30px rgba(255, 255, 255, 0.2)',
-                '&::before': {
-                  left: '100%',
-                },
-                '& .MuiSvgIcon-root': {
-                  transform: 'translateX(5px)',
-                },
-              },
-              '&:active': {
-                transform: 'translateY(0)',
-              },
-            }}
-          >
-            View Project
-          </Button>
-        )}
       </Box>
     </Box>
   );
